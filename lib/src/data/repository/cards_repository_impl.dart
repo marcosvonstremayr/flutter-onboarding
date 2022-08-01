@@ -1,10 +1,12 @@
 import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
-import '../models/card_model.dart';
-import '../../utils/constants.dart';
+import 'package:flutter/services.dart';
 
-class CardRepository {
+import '../../core/util/constants.dart';
+import '../../domain/repository/card_repository.dart';
+import '../model/card_model.dart';
 
+class CardRepositoryImpl extends CardRepository {
+  @override
   Future<List<CardModel>> fetchCards() async {
     List<CardModel> cardsModels = [];
     var jsonText = await rootBundle.loadString(Constants.pathToJson);

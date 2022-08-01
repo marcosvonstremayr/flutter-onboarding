@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../models/card_model.dart';
-import '../../utils/constants.dart';
-import 'components/card_text.dart';
+import '../../data/model/card_model.dart';
+import '../../core/util/constants.dart';
+import '../widget/show_card_properties.dart';
 
 class CardDetail extends StatefulWidget {
   const CardDetail({Key? key}) : super(key: key);
@@ -29,7 +29,7 @@ class _CardDetailState extends State<CardDetail> {
             color: Constants.iconThemeColor,
           ),
           title: Text(
-            cardInfo.name,
+            cardInfo.name ?? Constants.unknownCardName,
             style: TextStyle(
               color: Constants.iconThemeColor,
               fontSize: Constants.titleFontSize,
@@ -44,44 +44,51 @@ class _CardDetailState extends State<CardDetail> {
                 padding: const EdgeInsets.all(Constants.cardPadding),
                 child: Container(
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Constants.cardGradientColor1,
-                          Constants.cardGradientColor2
-                        ],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Constants.cardShadowColor,
-                          blurRadius: Constants.cardShadowBlurRadius,
-                          spreadRadius: Constants.cardShadowSpreadRadius,
-                        )
+                    gradient: LinearGradient(
+                      colors: [
+                        Constants.cardGradientColor1,
+                        Constants.cardGradientColor2
                       ],
-                      borderRadius:
-                          BorderRadius.circular(Constants.cardBorderRadius),
-                      border: Border.all(
-                        color: Constants.cardBorderColor,
-                        width: Constants.cardBorderWidth,
-                      )),
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Constants.cardShadowColor,
+                        blurRadius: Constants.cardShadowBlurRadius,
+                        spreadRadius: Constants.cardShadowSpreadRadius,
+                      )
+                    ],
+                    borderRadius:
+                        BorderRadius.circular(Constants.cardBorderRadius),
+                    border: Border.all(
+                      color: Constants.cardBorderColor,
+                      width: Constants.cardBorderWidth,
+                    ),
+                  ),
                   child: Column(
                     children: [
-                      Image.asset(
-                        Constants.pathToImageCard,
-                        height: Constants.cardHeight,
-                      ),
+                      cardInfo.img != null
+                          ? Image.network(
+                              cardInfo.img!,
+                              height: Constants.cardHeight,
+                            )
+                          : Image.asset(
+                              Constants.pathToImageCard,
+                              height: Constants.cardHeight,
+                            ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal:
-                                Constants.cardInfoContainerHorizontalPadding,
-                            vertical:
-                                Constants.cardInfoContainerVerticalPadding),
+                          horizontal:
+                              Constants.cardInfoContainerHorizontalPadding,
+                          vertical: Constants.cardInfoContainerVerticalPadding,
+                        ),
                         child: Container(
                           decoration: BoxDecoration(
                             color: Constants.cardInfoContainerColor,
                             borderRadius: BorderRadius.circular(
-                                Constants.cardInfoContainerBorderRadius),
+                              Constants.cardInfoContainerBorderRadius,
+                            ),
                             boxShadow: [
                               BoxShadow(
                                 color: Constants.cardInfoContainerShadowColor,
@@ -98,51 +105,37 @@ class _CardDetailState extends State<CardDetail> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const CardText(
-                                    text: "ID",
-                                    isTitle: Constants.titleIsTrue,
+                                  showPropertyIfExists(
+                                    cardInfo.cardSet,
+                                    Constants.cardSetTitle,
                                   ),
-                                  const CardText(
-                                    text: "Name",
-                                    isTitle: Constants.titleIsTrue,
+                                  showPropertyIfExists(
+                                    cardInfo.type,
+                                    Constants.typeTitle,
                                   ),
-                                  const CardText(
-                                    text: "Card Set",
-                                    isTitle: Constants.titleIsTrue,
+                                  showPropertyIfExists(
+                                    cardInfo.rarity,
+                                    Constants.rarityTitle,
                                   ),
-                                  const CardText(
-                                    text: "Type",
-                                    isTitle: Constants.titleIsTrue,
+                                  showPropertyIfExists(
+                                    cardInfo.playerClass,
+                                    Constants.playerClassTitle,
                                   ),
-                                  cardInfo.text != null
-                                      ? const CardText(
-                                          text: "Text",
-                                          isTitle: Constants.titleIsTrue,
-                                        )
-                                      : const SizedBox.shrink(),
-                                  cardInfo.health != null
-                                      ? const CardText(
-                                          text: "Health",
-                                          isTitle: Constants.titleIsTrue,
-                                        )
-                                      : const SizedBox.shrink(),
+                                  showPropertyIfExists(
+                                    cardInfo.artist,
+                                    Constants.artistTitle,
+                                  ),
                                 ],
                               ),
                               Flexible(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    CardText(text: cardInfo.cardId),
-                                    CardText(text: cardInfo.cardSet),
-                                    CardText(text: cardInfo.type),
-                                    CardText(text: cardInfo.playerClass),
-                                    cardInfo.text != null
-                                        ? CardText(text: cardInfo.text!)
-                                        : const SizedBox.shrink(),
-                                    cardInfo.health != null
-                                        ? CardText(
-                                            text: cardInfo.health.toString())
-                                        : const SizedBox.shrink(),
+                                    showPropertyIfExists(cardInfo.cardSet),
+                                    showPropertyIfExists(cardInfo.type),
+                                    showPropertyIfExists(cardInfo.rarity),
+                                    showPropertyIfExists(cardInfo.playerClass),
+                                    showPropertyIfExists(cardInfo.artist),
                                   ],
                                 ),
                               ),
