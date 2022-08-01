@@ -58,4 +58,10 @@ abstract class Constants {
   static const cardTextMaxLines = 6;
   static const String pathToJson = "assets/cards_list.json";
   static const String singleCardAppBarTitle = "Ysera";
+  static const String cardSetTitle = "Card Set";
+  static const String typeTitle = "Type";
+  static const String rarityTitle = "Rarity";
+  static const String playerClassTitle = "Player Class";
+  static const String artistTitle = "Artist";
+  static const String unknownCardName = "Unknown";
 }
