@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+
+import '../../core/util/dimensions_constants.dart';
+import '../../core/util/string_constants.dart';
 import '../../data/model/card_model.dart';
 import '../../core/util/constants.dart';
 import '../widget/show_card_properties.dart';
+import '../widget/show_img.dart';
 
 class CardDetail extends StatefulWidget {
   const CardDetail({Key? key}) : super(key: key);
@@ -25,14 +29,14 @@ class _CardDetailState extends State<CardDetail> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(
+          iconTheme: const IconThemeData(
             color: Constants.iconThemeColor,
           ),
           title: Text(
-            cardInfo.name ?? Constants.unknownCardName,
-            style: TextStyle(
+            cardInfo.name ?? StringConstants.unknownCardName,
+            style: const TextStyle(
               color: Constants.iconThemeColor,
-              fontSize: Constants.titleFontSize,
+              fontSize: DimensionsConstants.titleFontSize,
             ),
           ),
           backgroundColor: Constants.appBarBackgroundColor,
@@ -41,106 +45,90 @@ class _CardDetailState extends State<CardDetail> {
           child: ListView(
             children: [
               Padding(
-                padding: const EdgeInsets.all(Constants.cardPadding),
+                padding: const EdgeInsets.all(DimensionsConstants.cardPadding),
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
                       colors: [
-                        Constants.cardGradientColor1,
-                        Constants.cardGradientColor2
+                        Constants.cardDetailGradientColor1,
+                        Constants.cardDetailGradientColor2,
+                        Constants.cardDetailGradientColor1,
                       ],
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
                     ),
                     boxShadow: [
                       BoxShadow(
                         color: Constants.cardShadowColor,
-                        blurRadius: Constants.cardShadowBlurRadius,
-                        spreadRadius: Constants.cardShadowSpreadRadius,
+                        blurRadius: DimensionsConstants.cardShadowBlurRadius,
+                        spreadRadius: DimensionsConstants.cardShadowSpreadRadius,
                       )
                     ],
                     borderRadius:
-                        BorderRadius.circular(Constants.cardBorderRadius),
+                        BorderRadius.circular(DimensionsConstants.cardBorderRadius),
                     border: Border.all(
                       color: Constants.cardBorderColor,
-                      width: Constants.cardBorderWidth,
+                      width: DimensionsConstants.cardBorderWidth,
                     ),
                   ),
                   child: Column(
                     children: [
-                      cardInfo.img != null
-                          ? Image.network(
-                              cardInfo.img!,
-                              height: Constants.cardHeight,
-                            )
-                          : Image.asset(
-                              Constants.pathToImageCard,
-                              height: Constants.cardHeight,
-                            ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal:
-                              Constants.cardInfoContainerHorizontalPadding,
-                          vertical: Constants.cardInfoContainerVerticalPadding,
+                          vertical: DimensionsConstants.cardDetailImgPadding,
                         ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Constants.cardInfoContainerColor,
-                            borderRadius: BorderRadius.circular(
-                              Constants.cardInfoContainerBorderRadius,
+                        child: showImgIfExists(
+                          cardInfo.img,
+                          DimensionsConstants.cardHeight,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: DimensionsConstants.cardInfoContainerHorizontalPadding,
+                          right: DimensionsConstants.cardInfoContainerHorizontalPadding,
+                          bottom: DimensionsConstants.cardInfoContainerBottomPadding,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                showPropertyIfExists(
+                                  cardInfo.cardSet,
+                                  StringConstants.cardSetTitle,
+                                ),
+                                showPropertyIfExists(
+                                  cardInfo.type,
+                                  StringConstants.typeTitle,
+                                ),
+                                showPropertyIfExists(
+                                  cardInfo.rarity,
+                                  StringConstants.rarityTitle,
+                                ),
+                                showPropertyIfExists(
+                                  cardInfo.playerClass,
+                                  StringConstants.playerClassTitle,
+                                ),
+                                showPropertyIfExists(
+                                  cardInfo.artist,
+                                  StringConstants.artistTitle,
+                                ),
+                              ],
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Constants.cardInfoContainerShadowColor,
-                                spreadRadius:
-                                    Constants.cardInfoContainerSpreadRadius,
-                                blurRadius:
-                                    Constants.cardInfoContainerBlurRadius,
-                              )
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  showPropertyIfExists(
-                                    cardInfo.cardSet,
-                                    Constants.cardSetTitle,
-                                  ),
-                                  showPropertyIfExists(
-                                    cardInfo.type,
-                                    Constants.typeTitle,
-                                  ),
-                                  showPropertyIfExists(
-                                    cardInfo.rarity,
-                                    Constants.rarityTitle,
-                                  ),
-                                  showPropertyIfExists(
-                                    cardInfo.playerClass,
-                                    Constants.playerClassTitle,
-                                  ),
-                                  showPropertyIfExists(
-                                    cardInfo.artist,
-                                    Constants.artistTitle,
-                                  ),
+                                  showPropertyIfExists(cardInfo.cardSet),
+                                  showPropertyIfExists(cardInfo.type),
+                                  showPropertyIfExists(cardInfo.rarity),
+                                  showPropertyIfExists(cardInfo.playerClass),
+                                  showPropertyIfExists(cardInfo.artist),
                                 ],
                               ),
-                              Flexible(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    showPropertyIfExists(cardInfo.cardSet),
-                                    showPropertyIfExists(cardInfo.type),
-                                    showPropertyIfExists(cardInfo.rarity),
-                                    showPropertyIfExists(cardInfo.playerClass),
-                                    showPropertyIfExists(cardInfo.artist),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -148,24 +136,23 @@ class _CardDetailState extends State<CardDetail> {
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: Constants.iconPadding),
+                padding: const EdgeInsets.only(bottom: DimensionsConstants.iconPadding),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(
                       Icons.favorite,
-                      color: Constants.iconFavoriteColor,
-                      size: Constants.likeIconSize,
+                      color: Constants.likeColor,
+                      size: DimensionsConstants.likeIconSize,
                     ),
                     Padding(
                       padding:
-                          const EdgeInsets.only(left: Constants.iconPadding),
+                          const EdgeInsets.only(left: DimensionsConstants.iconPadding),
                       child: Text(
                         "$_likeCounter",
                         style: const TextStyle(
                           color: Constants.likeCounterNumberColor,
-                          fontSize: Constants.likeCounterFontSize,
+                          fontSize: DimensionsConstants.likeCounterFontSize,
                         ),
                       ),
                     )
@@ -177,7 +164,7 @@ class _CardDetailState extends State<CardDetail> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: addLike,
-          backgroundColor: Constants.likeButtonColor,
+          backgroundColor: Constants.likeColor,
           child: const Icon(Icons.favorite),
         ),
       ),

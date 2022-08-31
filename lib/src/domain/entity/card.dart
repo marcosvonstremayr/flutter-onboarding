@@ -6,11 +6,11 @@ class Card {
   final String? type;
   final String? faction;
   final String? rarity;
-  final int? cost;
-  final int? attack;
-  final int? health;
-  final int? durability;
-  final int? armor;
+  final String? cost;
+  final String? attack;
+  final String? health;
+  final String? durability;
+  final String? armor;
   final String? text;
   final String? inPlayText;
   final String? flavor;
@@ -20,7 +20,7 @@ class Card {
   final String? race;
   final String? playerClass;
   final String? multiClassGroup;
-  final String? classes;
+  final List<dynamic>? classes;
   final String? howToGet;
   final String? howToGetGold;
   final String? img;
@@ -28,7 +28,7 @@ class Card {
   final String? locale;
   final List<String>? mechanics;
 
-  Card(
+  Card({
     this.cardId,
     this.dbfId,
     this.name,
@@ -57,5 +57,5 @@ class Card {
     this.imgGold,
     this.locale,
     this.mechanics,
-  );
+  });
 }
