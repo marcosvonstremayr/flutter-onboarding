@@ -1,0 +1,34 @@
+abstract class DimensionsConstants {
+  static const double cardHeight = 350;
+  static const double likeIconSize = 30;
+  static const double likeCounterFontSize = 30;
+  static const double cardTextPadding = 8;
+  static const double cardTextFontSize = 18;
+  static const double iconPadding = 25;
+  static const double titleFontSize = 30;
+  static const double cardPadding = 30;
+  static const double cardShadowBlurRadius = 10;
+  static const double cardShadowSpreadRadius = 7;
+  static const double cardBorderRadius = 20;
+  static const double cardBorderWidth = 2;
+  static const double cardInfoContainerBottomPadding = 20;
+  static const double cardInfoContainerHorizontalPadding = 20;
+  static const cardTextMaxLines = 6;
+  static const double drawerTilesFontSize = 24;
+  static const double drawerTilesPadding = 10;
+  static const double errorImgHeight = 350;
+  static const double hearthstoneDrawerLogoHeight = 200;
+  static const int numberOfGridColumns = 2;
+  static const double gridContainerBorderRadius = 10;
+  static const double gridImageHeight = 150;
+  static const double gridTextFontSize = 18;
+  static const double homeImgHeight = double.infinity;
+  static const double homeImgWidth = double.infinity;
+  static const double paddingBetweenGrids = 8;
+  static const int gridTextMaxLines = 2;
+  static const double gridImgPadding = 8;
+  static const double gridChildAspectRatio = 1/1.25;
+  static const double cardDetailImgPadding = 15;
+  static const double drawerSubcategoriesFontSize = 18;
+  static const double errorMsgFontSize = 24;
+}

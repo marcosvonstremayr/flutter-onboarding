@@ -1,5 +1,6 @@
-import '../../data/model/card_model.dart';
+import '../entity/card_event.dart';
 
 abstract class CardRepository {
-  Future<List<CardModel>> fetchCards();
+  Future<CardEvent> fetchFilteredCards(endpoint);
+  Future<CardEvent> fetchAllCards();
 }
