@@ -75,7 +75,7 @@ class _CardDetailState extends State<CardDetail> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                          vertical: DimensionsConstants.cardDetailImgPadding,
+                          vertical: DimensionsConstants.cardDetailImagePadding,
                         ),
                         child: showImgIfExists(
                           cardInfo.img,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_core/firebase_core.dart';
 
 import 'src/presentation/bloc/cards_bloc/cards_bloc.dart';
 import 'src/core/usecases/usecase.dart';
@@ -12,8 +13,10 @@ import 'src/core/util/constants.dart';
 import 'src/presentation/view/homepage.dart';
 import 'src/core/util/string_constants.dart';
 
-
-void main() => runApp(const HearthstoneApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const HearthstoneApp());
+}
 
 class HearthstoneApp extends StatefulWidget {
   const HearthstoneApp({Key? key}) : super(key: key);
@@ -49,16 +52,24 @@ class _HearthstoneAppState extends State<HearthstoneApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: StringConstants.appTitle,
-      theme: ThemeData(
-        fontFamily: StringConstants.appFont,
-        scaffoldBackgroundColor: Constants.appBackgroundColor,
-        canvasColor: Constants.appCanvasColor,
-      ),
-      home: Homepage(
-        bloc: _bloc,
-      ),
+    return FutureBuilder(
+      future: Firebase.initializeApp(),
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<dynamic> snapshot,
+      ) {
+        return MaterialApp(
+          title: StringConstants.appTitle,
+          theme: ThemeData(
+            fontFamily: StringConstants.appFont,
+            scaffoldBackgroundColor: Constants.appBackgroundColor,
+            canvasColor: Constants.appCanvasColor,
+          ),
+          home: Homepage(
+            bloc: _bloc,
+          ),
+        );
+      },
     );
   }
 }

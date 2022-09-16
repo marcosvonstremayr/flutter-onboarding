@@ -36,13 +36,15 @@ class Homepage extends StatelessWidget {
               DrawerHeader(
                 child: Center(
                   child: Image.asset(
-                    AssetsConstants.pathToLogoImg,
+                    AssetsConstants.pathToLogoImage,
                     height: DimensionsConstants.hearthstoneDrawerLogoHeight,
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(DimensionsConstants.drawerTilesPadding),
+                padding: const EdgeInsets.all(
+                  DimensionsConstants.drawerTilesPadding,
+                ),
                 child: ListTile(
                   title: const Text(
                     StringConstants.drawerListTileAllCards,
@@ -58,7 +60,9 @@ class Homepage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(DimensionsConstants.drawerTilesPadding),
+                padding: const EdgeInsets.all(
+                  DimensionsConstants.drawerTilesPadding,
+                ),
                 child: Theme(
                   data: Theme.of(context).copyWith(
                     unselectedWidgetColor: Constants.listTilesDrawerColor,
@@ -74,7 +78,8 @@ class Homepage extends StatelessWidget {
                     ),
                     iconColor: Constants.listTilesDrawerColor,
                     children: [
-                      for (var key in ApiServiceConstants.apiCardsQualityEndpoint.keys)
+                      for (var key
+                          in ApiServiceConstants.apiCardsQualityEndpoint.keys)
                         TextButton(
                           onPressed: () {
                             Navigator.pop(context);
@@ -86,7 +91,8 @@ class Homepage extends StatelessWidget {
                             key,
                             style: const TextStyle(
                               color: Constants.listTilesDrawerColor,
-                              fontSize: DimensionsConstants.drawerSubcategoriesFontSize,
+                              fontSize: DimensionsConstants
+                                  .drawerSubcategoriesFontSize,
                             ),
                           ),
                         ),
@@ -95,7 +101,9 @@ class Homepage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(DimensionsConstants.drawerTilesPadding),
+                padding: const EdgeInsets.all(
+                  DimensionsConstants.drawerTilesPadding,
+                ),
                 child: Theme(
                   data: Theme.of(context).copyWith(
                     unselectedWidgetColor: Constants.listTilesDrawerColor,
@@ -111,7 +119,8 @@ class Homepage extends StatelessWidget {
                     ),
                     iconColor: Constants.listTilesDrawerColor,
                     children: [
-                      for (var key in ApiServiceConstants.apiCardsClassesEndpoint.keys)
+                      for (var key
+                          in ApiServiceConstants.apiCardsClassesEndpoint.keys)
                         TextButton(
                           onPressed: () {
                             Navigator.pop(context);
@@ -123,7 +132,8 @@ class Homepage extends StatelessWidget {
                             key,
                             style: const TextStyle(
                               color: Constants.listTilesDrawerColor,
-                              fontSize: DimensionsConstants.drawerSubcategoriesFontSize,
+                              fontSize: DimensionsConstants
+                                  .drawerSubcategoriesFontSize,
                             ),
                           ),
                         ),
@@ -142,90 +152,112 @@ class Homepage extends StatelessWidget {
               BuildContext context,
               AsyncSnapshot<CardEvent> snapshot,
             ) {
-              switch(snapshot.data!.status){
-                case Status.initial: {
-                  return Image.asset(
-                    AssetsConstants.pathToPoster,
-                    height: DimensionsConstants.homeImgHeight,
-                    width: DimensionsConstants.homeImgWidth,
-                    fit: BoxFit.fill,
-                    alignment: Alignment.center,
-                  );
-                }
-                case Status.loading: {
-                  return const CircularProgressIndicator();
-                }
-                case Status.success: {
-                  return GridView.builder(
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: DimensionsConstants.numberOfGridColumns,
-                      childAspectRatio: DimensionsConstants.gridChildAspectRatio,
-                    ),
-                    itemCount: snapshot.data!.cards!.length,
-                    itemBuilder: (
+              switch (snapshot.data!.status) {
+                case Status.initial:
+                  {
+                    return Image.asset(
+                      AssetsConstants.pathToPoster,
+                      height: DimensionsConstants.homeImageHeight,
+                      width: DimensionsConstants.homeImageWidth,
+                      fit: BoxFit.fill,
+                      alignment: Alignment.center,
+                    );
+                  }
+                case Status.loading:
+                  {
+                    return const CircularProgressIndicator();
+                  }
+                case Status.success:
+                  {
+                    return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: DimensionsConstants.numberOfGridColumns,
+                        childAspectRatio:
+                            DimensionsConstants.gridChildAspectRatio,
+                      ),
+                      itemCount: snapshot.data!.cards!.length,
+                      itemBuilder: (
                         BuildContext context,
                         int index,
-                        ) {
-                      return Padding(
-                        padding:
-                        const EdgeInsets.all(DimensionsConstants.paddingBetweenGrids),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const CardDetail(),
-                                settings: RouteSettings(
-                                  arguments: snapshot.data!.cards![index],
+                      ) {
+                        return Padding(
+                          padding: const EdgeInsets.all(
+                            DimensionsConstants.paddingBetweenGrids,
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const CardDetail(),
+                                  settings: RouteSettings(
+                                    arguments: snapshot.data!.cards![index],
+                                  ),
                                 ),
+                              );
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                  DimensionsConstants.gridContainerBorderRadius,
+                                ),
+                                color: Constants.gridCardColor,
                               ),
-                            );
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                DimensionsConstants.gridContainerBorderRadius,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(
+                                      DimensionsConstants.gridImagePadding,
+                                    ),
+                                    child: showImgIfExists(
+                                      snapshot.data!.cards![index].img,
+                                      DimensionsConstants.gridImageHeight,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: gridCardText(
+                                      snapshot.data!.cards![index].name,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: gridCardText(
+                                      snapshot.data!.cards![index].cardSet,
+                                    ),
+                                  )
+                                ],
                               ),
-                              color: Constants.gridCardColor,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(
-                                    DimensionsConstants.gridImgPadding,
-                                  ),
-                                  child: showImgIfExists(
-                                    snapshot.data!.cards![index].img,
-                                    DimensionsConstants.gridImageHeight,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: gridCardText(
-                                    snapshot.data!.cards![index].name,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: gridCardText(
-                                    snapshot.data!.cards![index].cardSet,
-                                  ),
-                                )
-                              ],
                             ),
                           ),
+                        );
+                      },
+                    );
+                  }
+                case Status.error:
+                  {
+                    return error(snapshot.data!.errorMsg!);
+                  }
+                case Status.empty:
+                  {
+                    return Column(
+                      children: [
+                        Image.asset(
+                          AssetsConstants.emptyScreenImage,
+                          height: DimensionsConstants.emptyImageHeight,
                         ),
-                      );
-                    },
-                  );
-                }
-                case Status.error: {
-                  return error(snapshot.data!.errorMsg!);
-                }
-                case Status.empty: {
-                  return const Text(StringConstants.noCardsFound);
-                }
+                        const Text(
+                          StringConstants.noCardsFound,
+                          style: TextStyle(
+                            color: Constants.emptyCardsColor,
+                            fontSize: DimensionsConstants.emptyCardsFontSize,
+                          ),
+                        ),
+                      ],
+                    );
+                  }
               }
             },
           ),

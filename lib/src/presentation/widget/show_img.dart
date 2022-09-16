@@ -14,7 +14,10 @@ Widget showImgIfExists(String? img, double height) {
         url,
         error,
       ) =>
-          const Icon(Icons.error),
+          Image.asset(
+        AssetsConstants.backCardImage,
+        height: height,
+      ),
       height: height,
     );
   } else {
