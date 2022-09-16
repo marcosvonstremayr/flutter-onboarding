@@ -11,13 +11,13 @@ Widget error(String errorMsg) {
       children: [
         Image.asset(
           AssetsConstants.errorScreen,
-          height: DimensionsConstants.errorImgHeight,
+          height: DimensionsConstants.errorImageHeight,
         ),
         Text(
           errorMsg,
           style: const TextStyle(
-            color: Constants.errorMsgTextColor,
-            fontSize: DimensionsConstants.errorMsgFontSize,
+            color: Constants.errorMessageTextColor,
+            fontSize: DimensionsConstants.errorMessageFontSize,
           ),
         ),
       ],

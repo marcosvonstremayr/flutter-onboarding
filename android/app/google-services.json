@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "568599881343",
+    "project_id": "hearthstone-cards-92134",
+    "storage_bucket": "hearthstone-cards-92134.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:568599881343:android:be3b26b124b65a2c20c14a",
+        "android_client_info": {
+          "package_name": "com.marcosvonstremayr.hearthstone_cards.hearthstone_cards"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "568599881343-1k0p5lagoku5q634flu683gtbd0r21e0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK-vhsR0d4zUhHg8rUMdLP9TLbrsCPCpM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "568599881343-1k0p5lagoku5q634flu683gtbd0r21e0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

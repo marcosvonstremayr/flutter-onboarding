@@ -15,11 +15,12 @@ abstract class Constants {
   static const bool titleIsTrue = true;
   static const Color likeCounterNumberColor = Colors.white;
   static const Color gridTextColor = Colors.white;
-  static const double homeImgHeight = double.infinity;
-  static const double homeImgWidth = double.infinity;
+  static const double homeImageHeight = double.infinity;
+  static const double homeImageWidth = double.infinity;
   static Color gridCardColor = Colors.white.withOpacity(0.15);
   static Color appCanvasColor = Colors.black.withOpacity(0.7);
   static const Color cardDetailGradientColor1 = Color(0xFFBB86FC);
   static const Color cardDetailGradientColor2 = Color(0xFF03DAC5);
-  static const Color errorMsgTextColor = Colors.white;
+  static const Color errorMessageTextColor = Colors.white;
+  static const Color emptyCardsColor = Colors.white;
 }

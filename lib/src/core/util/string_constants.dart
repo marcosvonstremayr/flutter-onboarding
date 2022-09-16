@@ -13,4 +13,8 @@ abstract class StringConstants {
   static const String apiError = "An error has occurred while fetching the information";
   static const String internetConnectionError = "No internet connection";
   static const String noCardsFound = "No cards found";
+  static const String allCardsSubcollection = "cards";
+  static const String allCardsDocument = "allCards";
+  static const String firestoreMainCollection = "cards";
+  static const String cardIdProperty = "cardId";
 }
