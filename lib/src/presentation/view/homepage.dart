@@ -1,24 +1,42 @@
 import 'package:flutter/material.dart';
 
+import '../../config/notification_service/local_notification_service.dart';
 import '../../core/util/api_service_constants.dart';
 import '../../core/util/assets_constants.dart';
 import '../../core/util/constants.dart';
 import '../../core/util/dimensions_constants.dart';
 import '../../core/util/string_constants.dart';
 import '../../domain/entity/card_event.dart';
+import '../bloc/blocs.dart';
 import '../bloc/cards_bloc/cards_bloc.dart';
 import '../widget/error.dart';
 import '../widget/grid_text.dart';
 import '../widget/show_img.dart';
 import 'card_detail.dart';
+import 'favorites.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
   const Homepage({
     Key? key,
-    required this.bloc,
+    required this.blocs,
+    required this.service,
   }) : super(key: key);
 
-  final CardsBloc bloc;
+  final Blocs blocs;
+  final LocalNotificationService service;
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  late CardsBloc bloc;
+
+  @override
+  void initState() {
+    bloc = widget.blocs.homePageBloc;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +158,34 @@ class Homepage extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
+              ),
+              Padding(
+                padding: const EdgeInsets.all(
+                  DimensionsConstants.drawerTilesPadding,
+                ),
+                child: ListTile(
+                  title: const Text(
+                    StringConstants.drawerListTileFavoriteCards,
+                    style: TextStyle(
+                      fontSize: DimensionsConstants.drawerTilesFontSize,
+                      color: Constants.listTilesDrawerColor,
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return Favorites(
+                            blocs: widget.blocs,
+                            service: widget.service,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
@@ -190,7 +235,14 @@ class Homepage extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const CardDetail(),
+                                  builder: (context) => CardDetail(
+                                    blocs: widget.blocs,
+                                    favoriteBloc: widget.blocs.favoriteBloc
+                                      ..isCardFavorite(
+                                        snapshot.data!.cards![index],
+                                      ),
+                                    service: widget.service,
+                                  ),
                                   settings: RouteSettings(
                                     arguments: snapshot.data!.cards![index],
                                   ),

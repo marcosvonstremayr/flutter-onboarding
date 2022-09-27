@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hearthstone_cards/src/core/util/api_service_constants.dart';
+import 'package:hearthstone_cards/src/data/datasource/local/DAOs/database.dart';
 import 'package:hearthstone_cards/src/data/datasource/remote/cards_api_service.dart';
 import 'package:hearthstone_cards/src/data/repository/cards_repository_impl.dart';
 import 'package:hearthstone_cards/src/domain/entity/card_event.dart';
@@ -12,20 +13,27 @@ import 'package:http/http.dart' as http;
 import '../../mocks.dart';
 import 'card_repository_test.mocks.dart';
 
-@GenerateMocks([CardsApiService])
+@GenerateMocks([CardsApiService, Database])
 void main() {
   late MockCardsApiService apiService;
   late CardRepositoryImpl cardRepositoryImpl;
+  late Database database;
 
   setUpAll(() {
     apiService = MockCardsApiService();
-    cardRepositoryImpl = CardRepositoryImpl(apiService);
+    database = MockDatabase();
+    cardRepositoryImpl = CardRepositoryImpl(
+      apiService,
+      database,
+    );
   });
 
   group("Card Repository Unit Testing", () {
     test('Test CardRepository fetchFilteredCards', () async {
       when(
-        apiService.callApi(endpoint: ApiServiceConstants.apiCardsQualityEndpoint["Free"]),
+        apiService.callApi(
+          endpoint: ApiServiceConstants.apiCardsQualityEndpoint["Free"],
+        ),
       ).thenAnswer((_) async {
         return http.Response(
           jsonEncode(cardsTestsJson),
@@ -33,8 +41,9 @@ void main() {
         );
       });
       expect(
-        await cardRepositoryImpl
-            .fetchFilteredCards(ApiServiceConstants.apiCardsQualityEndpoint["Free"]),
+        await cardRepositoryImpl.fetchFilteredCards(
+          ApiServiceConstants.apiCardsQualityEndpoint["Free"],
+        ),
         isA<CardEvent>(),
       );
     });
@@ -49,8 +58,7 @@ void main() {
         );
       });
       expect(
-        await cardRepositoryImpl
-            .fetchAllCards(),
+        await cardRepositoryImpl.fetchAllCards(),
         isA<CardEvent>(),
       );
     });
@@ -69,14 +77,20 @@ void main() {
     });
 
     test('Test CardRepository fetchFilteredCards empty json', () async {
-      when(apiService.callApi(endpoint: ApiServiceConstants.apiCardsQualityEndpoint["Free"])).thenAnswer((_) async {
+      when(
+        apiService.callApi(
+          endpoint: ApiServiceConstants.apiCardsQualityEndpoint["Free"],
+        ),
+      ).thenAnswer((_) async {
         return http.Response(
           jsonEncode(cardsTestEmptyJson),
           HttpStatus.ok,
         );
       });
       expect(
-        await cardRepositoryImpl.fetchFilteredCards(ApiServiceConstants.apiCardsQualityEndpoint["Free"]),
+        await cardRepositoryImpl.fetchFilteredCards(
+          ApiServiceConstants.apiCardsQualityEndpoint["Free"],
+        ),
         isA<CardEvent>(),
       );
     });
@@ -95,14 +109,20 @@ void main() {
     });
 
     test('Test CardRepository fetchFilteredCards corrupted json', () async {
-      when(apiService.callApi(endpoint: ApiServiceConstants.apiCardsQualityEndpoint["Free"])).thenAnswer((_) async {
+      when(
+        apiService.callApi(
+          endpoint: ApiServiceConstants.apiCardsQualityEndpoint["Free"],
+        ),
+      ).thenAnswer((_) async {
         return http.Response(
           jsonEncode(cardsCorruptedTestsJson),
           HttpStatus.ok,
         );
       });
       expect(
-        await cardRepositoryImpl.fetchFilteredCards(ApiServiceConstants.apiCardsQualityEndpoint["Free"]),
+        await cardRepositoryImpl.fetchFilteredCards(
+          ApiServiceConstants.apiCardsQualityEndpoint["Free"],
+        ),
         isA<CardEvent>(),
       );
     });
@@ -118,11 +138,17 @@ void main() {
     });
 
     test('Test CardRepository.fetchFiltered bad request', () async {
-      when(apiService.callApi(endpoint: ApiServiceConstants.apiCardsQualityEndpoint["Free"])).thenAnswer((_) async {
+      when(
+        apiService.callApi(
+          endpoint: ApiServiceConstants.apiCardsQualityEndpoint["Free"],
+        ),
+      ).thenAnswer((_) async {
         return http.Response("", HttpStatus.badGateway);
       });
       expect(
-        await cardRepositoryImpl.fetchFilteredCards(ApiServiceConstants.apiCardsQualityEndpoint["Free"]),
+        await cardRepositoryImpl.fetchFilteredCards(
+          ApiServiceConstants.apiCardsQualityEndpoint["Free"],
+        ),
         isA<CardEvent>(),
       );
     });

@@ -1,19 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../core/util/string_constants.dart';
 import '../../domain/entity/card_event.dart';
 import '../../domain/repository/card_repository.dart';
+import '../../domain/repository/database_response.dart';
 import '../datasource/local/DAOs/database.dart';
 import '../datasource/remote/cards_api_service.dart';
 import '../model/card_model.dart';
 
-class CardRepositoryImpl extends CardRepository {
+class CardRepositoryImpl extends CardRepository with ParseDatabaseResponse {
   final CardsApiService _apiService;
+  final Database _database;
 
-  CardRepositoryImpl(this._apiService);
+  CardRepositoryImpl(
+    this._apiService,
+    this._database,
+  );
 
   @override
   Future<CardEvent> fetchFilteredCards(endpoint) async {
@@ -30,7 +33,7 @@ class CardRepositoryImpl extends CardRepository {
         if (cards.isEmpty) {
           return CardEvent(status: Status.empty);
         } else {
-          Database.addCard(
+          _database.addCard(
             cards: cards,
             mainCollectionDocument: document,
             subcollection: specificEndpoint,
@@ -70,7 +73,7 @@ class CardRepositoryImpl extends CardRepository {
           return CardEvent(status: Status.empty);
         } else {
           cards.forEach((key, value) {
-            Database.addCard(
+            _database.addCard(
               cards: value,
               mainCollectionDocument: StringConstants.allCardsDocument,
               subcollection: StringConstants.allCardsSubcollection,
@@ -100,36 +103,6 @@ class CardRepositoryImpl extends CardRepository {
     }
   }
 
-  Future<CardEvent> parseDatabaseResponse({
-    required String document,
-    required String specificEndpoint,
-  }) async {
-    List<CardModel> cardsModels = [];
-    try {
-      QuerySnapshot dbResponse = await Database.readCards(
-        mainCollectionDocument: document,
-        subcollection: specificEndpoint,
-      );
-      if (dbResponse.docs.isEmpty) {
-        return CardEvent(status: Status.empty);
-      } else {
-        List<QueryDocumentSnapshot> cards = dbResponse.docs;
-        cards.forEach((card) {
-          var cardElement = CardModel.fromJson(card.data());
-          if (cardElement.cardId != null) {
-            cardsModels.add(cardElement);
-          }
-        });
-        return CardEvent(
-          cards: cardsModels,
-          status: Status.success,
-        );
-      }
-    } catch (e) {
-      return CardEvent(
-        status: Status.error,
-        errorMsg: "$e",
-      );
-    }
-  }
+  @override
+  Database get database => _database;
 }

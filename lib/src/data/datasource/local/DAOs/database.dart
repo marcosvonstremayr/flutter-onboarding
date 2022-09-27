@@ -8,7 +8,7 @@ final CollectionReference _mainCollection =
     _firestore.collection(StringConstants.firestoreMainCollection);
 
 class Database {
-  static Future<void> addCard({
+  Future<void> addCard({
     required List<dynamic> cards,
     required String mainCollectionDocument,
     required String subcollection,
@@ -34,18 +34,24 @@ class Database {
     batch.commit();
   }
 
-  static Future<QuerySnapshot> readCards({
+  Future<QuerySnapshot> readCards({
     required String mainCollectionDocument,
     required String subcollection,
   }) async {
-    _firestore.settings = const Settings(
-      persistenceEnabled: true,
-      cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
-    );
     CollectionReference cardsCollection =
         _mainCollection.doc(mainCollectionDocument).collection(subcollection);
-    var response =
-        await cardsCollection.get();
+    var response = await cardsCollection.get();
     return response;
+  }
+
+  Future<void> deleteCard({
+    required String docId,
+  }) async {
+    DocumentReference documentReferencer = _mainCollection
+        .doc(StringConstants.favoritesDocument)
+        .collection(StringConstants.favoritesSubcollection)
+        .doc(docId);
+
+    await documentReferencer.delete();
   }
 }

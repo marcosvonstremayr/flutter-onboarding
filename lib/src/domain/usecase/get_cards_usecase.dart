@@ -8,11 +8,11 @@ class GetCardsUsecase extends Usecase<CardEvent, String> {
   GetCardsUsecase(this._cardRepository);
 
   @override
-  Future<CardEvent> call({String? endpoint}) async {
-    if (endpoint == null) {
+  Future<CardEvent> call({String? params}) async {
+    if (params == null) {
       return await _cardRepository.fetchAllCards();
     } else {
-      return await _cardRepository.fetchFilteredCards(endpoint);
+      return await _cardRepository.fetchFilteredCards(params);
     }
   }
 }

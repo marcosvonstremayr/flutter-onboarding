@@ -35,7 +35,7 @@ void main (){
       when(cardRepository.fetchFilteredCards(endpoint)).thenAnswer((_) async{
         return CardEvent(cards: cardModelList, status: Status.success);
       });
-      expectLater(await getCardsUsecase(endpoint: endpoint), isA<CardEvent>());
+      expectLater(await getCardsUsecase(params: endpoint), isA<CardEvent>());
     });
   });
 }

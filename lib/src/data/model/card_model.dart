@@ -103,4 +103,37 @@ class CardModel extends Card {
       return CardModel();
     }
   }
+
+  static Map<String, dynamic> toJson(CardModel card) {
+    return {
+      "cardId" : card.cardId,
+      "dbfId": card.dbfId,
+      "name": card.name,
+      "cardSet": card.cardSet,
+      "type": card.type,
+      "faction": card.faction,
+      "rarity": card.rarity,
+      "cost": card.cost,
+      "attack": card.attack,
+      "health": card.health,
+      "durability": card.durability,
+      "armor": card.armor,
+      "text": card.text,
+      "inPlayText": card.inPlayText,
+      "flavor": card.flavor,
+      "artist": card.artist,
+      "collectible": card.collectible,
+      "elite": card.elite,
+      "race": card.race,
+      "playerClass": card.playerClass,
+      "multiClassGroup": card.multiClassGroup,
+      "classes": card.classes,
+      "howToGet": card.howToGet,
+      "howToGetGold": card.howToGetGold,
+      "img": card.img,
+      "imgGold": card.imgGold,
+      "locale": card.locale,
+      "mechanics": card.mechanics,
+    };
+  }
 }

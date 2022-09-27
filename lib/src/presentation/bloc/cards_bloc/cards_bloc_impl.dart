@@ -7,7 +7,9 @@ import 'cards_bloc.dart';
 class CardsBlocImpl extends CardsBloc {
   final Usecase _getCardsUsecase;
 
-  CardsBlocImpl(this._getCardsUsecase,);
+  CardsBlocImpl(
+    this._getCardsUsecase,
+  );
 
   final StreamController<CardEvent> _cardsStreamController = StreamController();
 
@@ -24,8 +26,8 @@ class CardsBlocImpl extends CardsBloc {
     _cardsStreamController.sink.add(
       CardEvent(status: Status.loading),
     );
-    _cardsStreamController.sink.add(await _getCardsUsecase(endpoint: endpoint));
-    }
+    _cardsStreamController.sink.add(await _getCardsUsecase(params: endpoint));
+  }
 
   @override
   Future<void> getAllCards() async {
