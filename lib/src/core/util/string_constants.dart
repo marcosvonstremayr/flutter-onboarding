@@ -8,6 +8,7 @@ abstract class StringConstants {
   static const String artistTitle = "Artist";
   static const String unknownCardName = "Unknown";
   static const String drawerListTileAllCards = "All Cards";
+  static const String drawerListTileFavoriteCards = "Favorites";
   static const String drawerListTileQualityCards = "Cards by Quality";
   static const String drawerListTileClassCards = "Cards by Class";
   static const String apiError = "An error has occurred while fetching the information";
@@ -17,4 +18,13 @@ abstract class StringConstants {
   static const String allCardsDocument = "allCards";
   static const String firestoreMainCollection = "cards";
   static const String cardIdProperty = "cardId";
+  static const String favoritesDocument = "favoritesDoc";
+  static const String favoritesSubcollection = "favorites";
+  static const String favoritesEndpoint = "favorites";
+  static const String favoritesAddedNotificationTitle = " was added to Favorites";
+  static const String favoritesAddedNotificationBody = "You can see your favorite cards in the Favorites section.";
+  static const String favoritesRemovedNotificationTitle = " was removed from Favorites";
+  static const String favoritesRemovedNotificationBody = "Your card won't appear anymore in the Favorites section.";
+  static const String favoritesAppBarTitle = "Favorites";
+  static const String favoritesUnavailable = "Favorites currently unavailable";
 }

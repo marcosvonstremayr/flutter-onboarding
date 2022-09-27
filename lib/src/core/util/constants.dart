@@ -23,4 +23,5 @@ abstract class Constants {
   static const Color cardDetailGradientColor2 = Color(0xFF03DAC5);
   static const Color errorMessageTextColor = Colors.white;
   static const Color emptyCardsColor = Colors.white;
+  static const Color favoritesUnavailableTextColor = Colors.white;
 }

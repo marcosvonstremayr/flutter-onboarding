@@ -7,8 +7,14 @@ Widget showImgIfExists(String? img, double height) {
   if (img != null) {
     return CachedNetworkImage(
       imageUrl: img,
-      progressIndicatorBuilder: (context, url, downloadProgress) =>
-          CircularProgressIndicator(value: downloadProgress.progress),
+      progressIndicatorBuilder: (
+        context,
+        url,
+        downloadProgress,
+      ) =>
+          Center(
+              child:
+                  CircularProgressIndicator(value: downloadProgress.progress)),
       errorWidget: (
         context,
         url,

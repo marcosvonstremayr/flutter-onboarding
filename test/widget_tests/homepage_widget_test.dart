@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hearthstone_cards/src/config/notification_service/local_notification_service.dart';
 import 'package:hearthstone_cards/src/core/util/string_constants.dart';
 import 'package:hearthstone_cards/src/data/model/card_model.dart';
 import 'package:hearthstone_cards/src/domain/entity/card_event.dart';
+import 'package:hearthstone_cards/src/presentation/bloc/blocs.dart';
 import 'package:hearthstone_cards/src/presentation/bloc/cards_bloc/cards_bloc.dart';
 import 'package:hearthstone_cards/src/presentation/view/homepage.dart';
 import 'package:mockito/annotations.dart';
@@ -13,23 +15,26 @@ import '../mocks.dart';
 import 'homepage_widget_test.mocks.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 
-@GenerateMocks([CardsBloc])
+@GenerateMocks([Blocs, LocalNotificationService, CardsBloc])
 void main() {
-  CardsBloc bloc = MockCardsBloc();
+  Blocs bloc = MockBlocs();
+  LocalNotificationService service = MockLocalNotificationService();
   StreamController<CardEvent> streamController = StreamController();
   CardEvent cardEvent = CardEvent(
     cards: [CardModel.fromJson(cardsTestsJson)],
     status: Status.success,
   );
+  CardsBloc homeBloc = MockCardsBloc();
 
   tearDown(() {
-    bloc.dispose();
+    homeBloc.dispose();
   });
 
   Widget _buildWidget() {
     return MaterialApp(
       home: Homepage(
-        bloc: bloc,
+        blocs: bloc,
+        service: service,
       ),
     );
   }
@@ -38,10 +43,13 @@ void main() {
       'When tapping on drawer item the UI rebuilds and creates grid with elements',
       (WidgetTester tester) async {
     await mockNetworkImages(() async {
-      when(bloc.getStream()).thenAnswer((_) {
+      when(bloc.homePageBloc).thenAnswer((_) {
+        return homeBloc;
+      });
+      when(homeBloc.getStream()).thenAnswer((_) {
         return streamController.stream;
       });
-      when(bloc.getAllCards()).thenAnswer((_) async {
+      when(homeBloc.getAllCards()).thenAnswer((_) async {
         streamController.sink.add(cardEvent);
       });
       await tester.pumpWidget(_buildWidget());

@@ -41,7 +41,7 @@ void main() {
       List<CardModel> listOfCards = [CardModel.fromJson(cardsTestsJson)];
       when(
         getCardsUsecaseMock(
-          endpoint: ApiServiceConstants.apiCardsQualityEndpoint["Free"],
+          params: ApiServiceConstants.apiCardsQualityEndpoint["Free"],
         ),
       ).thenAnswer((_) async {
         return CardEvent(
