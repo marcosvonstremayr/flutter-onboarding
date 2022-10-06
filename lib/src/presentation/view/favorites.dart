@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../config/notification_service/local_notification_service.dart';
 import '../../core/util/assets_constants.dart';
 import '../../core/util/constants.dart';
 import '../../core/util/dimensions_constants.dart';
 import '../../core/util/string_constants.dart';
 import '../../domain/entity/card_event.dart';
-import '../bloc/blocs.dart';
 import '../bloc/favorites_bloc/favorites_list_bloc.dart';
 import '../widget/error.dart';
 import '../widget/grid_text.dart';
@@ -14,13 +13,8 @@ import '../widget/show_img.dart';
 import 'card_detail.dart';
 
 class Favorites extends StatefulWidget {
-  final LocalNotificationService service;
-  final Blocs blocs;
-
   const Favorites({
     Key? key,
-    required this.blocs,
-    required this.service,
   }) : super(key: key);
 
   @override
@@ -28,12 +22,12 @@ class Favorites extends StatefulWidget {
 }
 
 class _FavoritesState extends State<Favorites> {
-  late FavoritesListBloc favoritesListBloc;
-
   @override
   void initState() {
-    widget.blocs.favoritesListBloc.getFavoriteCards();
-    favoritesListBloc = widget.blocs.favoritesListBloc;
+    Provider.of<FavoritesListBloc>(
+      context,
+      listen: false,
+    ).getFavoriteCards();
     super.initState();
   }
 
@@ -56,7 +50,7 @@ class _FavoritesState extends State<Favorites> {
         ),
         body: Center(
           child: StreamBuilder<CardEvent>(
-            stream: favoritesListBloc.getStream(),
+            stream: Provider.of<FavoritesListBloc>(context).getStream(),
             initialData: CardEvent(status: Status.loading),
             builder: (
               BuildContext context,
@@ -91,15 +85,7 @@ class _FavoritesState extends State<Favorites> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => CardDetail(
-                                    blocs: widget.blocs,
-                                    favoriteBloc: widget.blocs.favoriteBloc
-                                      ..isCardFavorite(
-                                        snapshot.data!.cards![index],
-                                      ),
-                                    service: widget.service,
-                                  ),
-                                  settings: RouteSettings(
-                                    arguments: snapshot.data!.cards![index],
+                                    cardInfo: snapshot.data!.cards![index],
                                   ),
                                 ),
                               );

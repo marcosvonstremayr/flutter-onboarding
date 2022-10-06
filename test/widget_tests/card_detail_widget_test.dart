@@ -4,42 +4,48 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hearthstone_cards/src/config/notification_service/local_notification_service.dart';
 import 'package:hearthstone_cards/src/data/model/card_model.dart';
 import 'package:hearthstone_cards/src/domain/entity/card_event.dart';
-import 'package:hearthstone_cards/src/presentation/bloc/blocs.dart';
 import 'package:hearthstone_cards/src/presentation/bloc/favorites_bloc/favorite_bloc.dart';
 import 'package:hearthstone_cards/src/presentation/bloc/favorites_bloc/favorites_list_bloc.dart';
 import 'package:hearthstone_cards/src/presentation/view/card_detail.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
+import 'package:provider/provider.dart';
 import '../mocks.dart';
 import 'card_detail_widget_test.mocks.dart';
 
-@GenerateMocks([LocalNotificationService, FavoritesBloc, FavoritesListBloc, Blocs])
+@GenerateMocks(
+  [LocalNotificationService, FavoritesBloc, FavoritesListBloc],
+)
 void main() {
   LocalNotificationService localNotificationService =
       MockLocalNotificationService();
   FavoritesBloc favoritesBloc = MockFavoritesBloc();
   FavoritesListBloc favoritesListBloc = MockFavoritesListBloc();
-  Blocs blocs = MockBlocs();
   StreamController<CardEvent> streamController = StreamController();
   CardModel mockedCard = CardModel.fromJson(cardsTestsJson);
 
   tearDown(() => favoritesBloc.dispose());
 
   Widget _buildWidget() {
-    return MaterialApp(
-      onGenerateRoute: (settings) {
-        return MaterialPageRoute(
-          settings: RouteSettings(arguments: mockedCard),
-          builder: (context) {
-            return CardDetail(
-              blocs: blocs,
-              favoriteBloc: favoritesBloc,
-              service: localNotificationService,
-            );
-          },
-        );
-      },
+    return MultiProvider(
+      providers: [
+        Provider<FavoritesBloc>.value(value: favoritesBloc),
+        Provider<FavoritesListBloc>.value(value: favoritesListBloc),
+        Provider(create: (_) => localNotificationService),
+      ],
+      child: MaterialApp(
+        onGenerateRoute: (settings) {
+          return MaterialPageRoute(
+            settings: RouteSettings(arguments: mockedCard),
+            builder: (context) {
+              return CardDetail(
+                cardInfo: mockedCard,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -73,6 +79,8 @@ void main() {
         find.byType(Image),
         findsWidgets,
       );
+      await tester.tap(find.byType(Image));
+      await tester.pumpAndSettle();
       expect(
         find.text("Kingsbane"),
         findsOneWidget,

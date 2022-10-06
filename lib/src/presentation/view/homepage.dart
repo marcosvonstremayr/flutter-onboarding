@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../config/notification_service/local_notification_service.dart';
 import '../../core/util/api_service_constants.dart';
 import '../../core/util/assets_constants.dart';
 import '../../core/util/constants.dart';
 import '../../core/util/dimensions_constants.dart';
 import '../../core/util/string_constants.dart';
 import '../../domain/entity/card_event.dart';
-import '../bloc/blocs.dart';
 import '../bloc/cards_bloc/cards_bloc.dart';
 import '../widget/error.dart';
 import '../widget/grid_text.dart';
@@ -18,23 +17,15 @@ import 'favorites.dart';
 class Homepage extends StatefulWidget {
   const Homepage({
     Key? key,
-    required this.blocs,
-    required this.service,
   }) : super(key: key);
-
-  final Blocs blocs;
-  final LocalNotificationService service;
 
   @override
   State<Homepage> createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> {
-  late CardsBloc bloc;
-
   @override
   void initState() {
-    bloc = widget.blocs.homePageBloc;
     super.initState();
   }
 
@@ -73,7 +64,10 @@ class _HomepageState extends State<Homepage> {
                   ),
                   onTap: () {
                     Navigator.pop(context);
-                    bloc.getAllCards();
+                    Provider.of<CardsBloc>(
+                      context,
+                      listen: false,
+                    ).getAllCards();
                   },
                 ),
               ),
@@ -101,7 +95,10 @@ class _HomepageState extends State<Homepage> {
                         TextButton(
                           onPressed: () {
                             Navigator.pop(context);
-                            bloc.getFilteredCards(
+                            Provider.of<CardsBloc>(
+                              context,
+                              listen: false,
+                            ).getFilteredCards(
                               ApiServiceConstants.apiCardsQualityEndpoint[key],
                             );
                           },
@@ -142,7 +139,10 @@ class _HomepageState extends State<Homepage> {
                         TextButton(
                           onPressed: () {
                             Navigator.pop(context);
-                            bloc.getFilteredCards(
+                            Provider.of<CardsBloc>(
+                              context,
+                              listen: false,
+                            ).getFilteredCards(
                               ApiServiceConstants.apiCardsClassesEndpoint[key],
                             );
                           },
@@ -176,10 +176,7 @@ class _HomepageState extends State<Homepage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return Favorites(
-                            blocs: widget.blocs,
-                            service: widget.service,
-                          );
+                          return const Favorites();
                         },
                       ),
                     );
@@ -191,7 +188,7 @@ class _HomepageState extends State<Homepage> {
         ),
         body: Center(
           child: StreamBuilder<CardEvent>(
-            stream: bloc.getStream(),
+            stream: Provider.of<CardsBloc>(context).getStream(),
             initialData: CardEvent(status: Status.initial),
             builder: (
               BuildContext context,
@@ -236,15 +233,7 @@ class _HomepageState extends State<Homepage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => CardDetail(
-                                    blocs: widget.blocs,
-                                    favoriteBloc: widget.blocs.favoriteBloc
-                                      ..isCardFavorite(
-                                        snapshot.data!.cards![index],
-                                      ),
-                                    service: widget.service,
-                                  ),
-                                  settings: RouteSettings(
-                                    arguments: snapshot.data!.cards![index],
+                                    cardInfo: snapshot.data!.cards![index],
                                   ),
                                 ),
                               );

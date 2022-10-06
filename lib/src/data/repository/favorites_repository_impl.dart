@@ -9,7 +9,6 @@ import '../model/card_model.dart';
 
 class FavoritesRepositoryImpl extends FavoritesRepository
     with ParseDatabaseResponse {
-  @override
   final Database _database;
 
   FavoritesRepositoryImpl(this._database);

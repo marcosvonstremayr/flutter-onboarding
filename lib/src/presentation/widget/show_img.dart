@@ -13,8 +13,8 @@ Widget showImgIfExists(String? img, double height) {
         downloadProgress,
       ) =>
           Center(
-              child:
-                  CircularProgressIndicator(value: downloadProgress.progress)),
+        child: CircularProgressIndicator(value: downloadProgress.progress),
+      ),
       errorWidget: (
         context,
         url,

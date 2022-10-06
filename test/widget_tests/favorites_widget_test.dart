@@ -11,15 +11,14 @@ import 'package:hearthstone_cards/src/presentation/view/favorites.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
+import 'package:provider/provider.dart';
 
 import '../mocks.dart';
 import 'favorites_widget_test.mocks.dart';
 
-@GenerateMocks([Blocs, FavoritesListBloc, LocalNotificationService])
+@GenerateMocks([FavoritesListBloc])
 void main() {
-  Blocs blocs = MockBlocs();
   FavoritesListBloc favoritesBloc = MockFavoritesListBloc();
-  LocalNotificationService service = MockLocalNotificationService();
   StreamController<CardEvent> streamController = StreamController();
 
   tearDown(() {
@@ -27,19 +26,17 @@ void main() {
   });
 
   Widget _buildWidget() {
-    return MaterialApp(
-      home: Favorites(
-        blocs: blocs,
-        service: service,
+    return Provider(
+      create: (_) => favoritesBloc,
+      child: const MaterialApp(
+        home: Favorites(
+        ),
       ),
     );
   }
 
   testWidgets("Seeing favorites elements", (WidgetTester tester) async {
     await mockNetworkImages(() async {
-      when(blocs.favoritesListBloc).thenAnswer((_) {
-        return favoritesBloc;
-      });
       when(favoritesBloc.getStream()).thenAnswer((_) {
         return streamController.stream;
       });
