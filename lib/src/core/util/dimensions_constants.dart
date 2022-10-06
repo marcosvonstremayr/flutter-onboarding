@@ -34,4 +34,12 @@ abstract class DimensionsConstants {
   static const double emptyCardsFontSize = 24;
   static const double emptyImageHeight = 500;
   static const int batchMaxSize = 500;
+  static const double originalAngle = 0;
+  static const int cardFlipAnimationSeconds = 1;
+  static const int matrixSetEntryRow = 3;
+  static const int matrixSetEntryCol = 2;
+  static const double matrixSetEntryV = 0.001;
+  static const double cardHeightContainer = 500;
+  static const double cardWidthContainer = 250;
+
 }

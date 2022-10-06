@@ -4,7 +4,6 @@ import '../../../core/util/api_service_constants.dart';
 
 class CardsApiService {
   final http.Client _client;
-
   CardsApiService({
     http.Client? client,
   }) : _client = client ?? http.Client();

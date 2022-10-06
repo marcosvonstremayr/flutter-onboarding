@@ -11,14 +11,13 @@ import 'package:hearthstone_cards/src/presentation/bloc/cards_bloc/cards_bloc.da
 import 'package:hearthstone_cards/src/presentation/view/homepage.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:provider/provider.dart';
 import '../mocks.dart';
 import 'homepage_widget_test.mocks.dart';
 import 'package:mocktail_image_network/mocktail_image_network.dart';
 
-@GenerateMocks([Blocs, LocalNotificationService, CardsBloc])
+@GenerateMocks([CardsBloc])
 void main() {
-  Blocs bloc = MockBlocs();
-  LocalNotificationService service = MockLocalNotificationService();
   StreamController<CardEvent> streamController = StreamController();
   CardEvent cardEvent = CardEvent(
     cards: [CardModel.fromJson(cardsTestsJson)],
@@ -31,10 +30,10 @@ void main() {
   });
 
   Widget _buildWidget() {
-    return MaterialApp(
-      home: Homepage(
-        blocs: bloc,
-        service: service,
+    return Provider(
+      create: (_) => homeBloc,
+      child: const MaterialApp(
+        home: Homepage(),
       ),
     );
   }
@@ -43,9 +42,6 @@ void main() {
       'When tapping on drawer item the UI rebuilds and creates grid with elements',
       (WidgetTester tester) async {
     await mockNetworkImages(() async {
-      when(bloc.homePageBloc).thenAnswer((_) {
-        return homeBloc;
-      });
       when(homeBloc.getStream()).thenAnswer((_) {
         return streamController.stream;
       });

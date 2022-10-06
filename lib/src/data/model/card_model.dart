@@ -71,7 +71,7 @@ class CardModel extends Card {
       }
       return CardModel(
         cardId: cardsJson["cardId"],
-        dbfId: cardsJson["dbfId"],
+        dbfId: cardsJson["dbfId"].toString(),
         name: cardsJson["name"],
         cardSet: cardsJson["cardSet"],
         type: cardsJson["type"],

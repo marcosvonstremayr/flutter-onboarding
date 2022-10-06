@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:hearthstone_cards/src/data/datasource/local/DAOs/database.dart';
+import 'src/data/datasource/local/DAOs/database.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 import 'src/config/notification_service/local_notification_service.dart';
 import 'src/data/repository/favorites_repository_impl.dart';
@@ -52,7 +53,6 @@ class _HearthstoneAppState extends State<HearthstoneApp> {
   late LocalNotificationService _localNotificationService;
   late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   late FavoritesListBloc _favoritesListBloc;
-  late Blocs _blocs;
   late Database _database;
 
   @override
@@ -82,11 +82,6 @@ class _HearthstoneAppState extends State<HearthstoneApp> {
       _getFavoriteUsecase,
     );
     _favoritesListBloc = FavoritesListBlocImpl(_getFavoritesUsecase);
-    _blocs = Blocs(
-      _cardsBloc,
-      _favoritesListBloc,
-      _favoritesBloc,
-    );
   }
 
   @override
@@ -105,16 +100,21 @@ class _HearthstoneAppState extends State<HearthstoneApp> {
         BuildContext context,
         AsyncSnapshot<dynamic> snapshot,
       ) {
-        return MaterialApp(
-          title: StringConstants.appTitle,
-          theme: ThemeData(
-            fontFamily: StringConstants.appFont,
-            scaffoldBackgroundColor: Constants.appBackgroundColor,
-            canvasColor: Constants.appCanvasColor,
-          ),
-          home: Homepage(
-            blocs: _blocs,
-            service: _localNotificationService,
+        return MultiProvider(
+          providers: [
+            Provider<CardsBloc>.value(value: _cardsBloc),
+            Provider<FavoritesBloc>.value(value: _favoritesBloc),
+            Provider<FavoritesListBloc>.value(value: _favoritesListBloc),
+            Provider(create: (_) => _localNotificationService),
+          ],
+          child: MaterialApp(
+            title: StringConstants.appTitle,
+            theme: ThemeData(
+              fontFamily: StringConstants.appFont,
+              scaffoldBackgroundColor: Constants.appBackgroundColor,
+              canvasColor: Constants.appCanvasColor,
+            ),
+            home: const Homepage(),
           ),
         );
       },

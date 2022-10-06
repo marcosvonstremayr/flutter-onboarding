@@ -3,18 +3,11 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i7;
+import 'dart:async' as _i3;
 
-import 'package:hearthstone_cards/src/config/notification_service/local_notification_service.dart'
-    as _i6;
-import 'package:hearthstone_cards/src/domain/entity/card_event.dart' as _i8;
-import 'package:hearthstone_cards/src/presentation/bloc/blocs.dart' as _i5;
+import 'package:hearthstone_cards/src/domain/entity/card_event.dart' as _i4;
 import 'package:hearthstone_cards/src/presentation/bloc/cards_bloc/cards_bloc.dart'
     as _i2;
-import 'package:hearthstone_cards/src/presentation/bloc/favorites_bloc/favorite_bloc.dart'
-    as _i3;
-import 'package:hearthstone_cards/src/presentation/bloc/favorites_bloc/favorites_list_bloc.dart'
-    as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -28,73 +21,6 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeCardsBloc_0 extends _i1.SmartFake implements _i2.CardsBloc {
-  _FakeCardsBloc_0(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
-}
-
-class _FakeFavoritesBloc_1 extends _i1.SmartFake implements _i3.FavoritesBloc {
-  _FakeFavoritesBloc_1(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
-}
-
-class _FakeFavoritesListBloc_2 extends _i1.SmartFake
-    implements _i4.FavoritesListBloc {
-  _FakeFavoritesListBloc_2(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
-}
-
-/// A class which mocks [Blocs].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockBlocs extends _i1.Mock implements _i5.Blocs {
-  MockBlocs() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i2.CardsBloc get homePageBloc => (super.noSuchMethod(
-          Invocation.getter(#homePageBloc),
-          returnValue: _FakeCardsBloc_0(this, Invocation.getter(#homePageBloc)))
-      as _i2.CardsBloc);
-  @override
-  _i3.FavoritesBloc get favoriteBloc =>
-      (super.noSuchMethod(Invocation.getter(#favoriteBloc),
-              returnValue:
-                  _FakeFavoritesBloc_1(this, Invocation.getter(#favoriteBloc)))
-          as _i3.FavoritesBloc);
-  @override
-  _i4.FavoritesListBloc get favoritesListBloc =>
-      (super.noSuchMethod(Invocation.getter(#favoritesListBloc),
-              returnValue: _FakeFavoritesListBloc_2(
-                  this, Invocation.getter(#favoritesListBloc)))
-          as _i4.FavoritesListBloc);
-}
-
-/// A class which mocks [LocalNotificationService].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockLocalNotificationService extends _i1.Mock
-    implements _i6.LocalNotificationService {
-  MockLocalNotificationService() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i7.Future<void> initialize() => (super.noSuchMethod(
-      Invocation.method(#initialize, []),
-      returnValue: _i7.Future<void>.value(),
-      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
-  @override
-  _i7.Future<void> showNotification({int? id, String? title, String? body}) =>
-      (super.noSuchMethod(
-              Invocation.method(
-                  #showNotification, [], {#id: id, #title: title, #body: body}),
-              returnValue: _i7.Future<void>.value(),
-              returnValueForMissingStub: _i7.Future<void>.value())
-          as _i7.Future<void>);
-}
-
 /// A class which mocks [CardsBloc].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -104,20 +30,20 @@ class MockCardsBloc extends _i1.Mock implements _i2.CardsBloc {
   }
 
   @override
-  _i7.Stream<_i8.CardEvent> getStream() =>
+  _i3.Stream<_i4.CardEvent> getStream() =>
       (super.noSuchMethod(Invocation.method(#getStream, []),
-              returnValue: _i7.Stream<_i8.CardEvent>.empty())
-          as _i7.Stream<_i8.CardEvent>);
+              returnValue: _i3.Stream<_i4.CardEvent>.empty())
+          as _i3.Stream<_i4.CardEvent>);
   @override
-  _i7.Future<void> getFilteredCards(dynamic endpoint) => (super.noSuchMethod(
+  _i3.Future<void> getFilteredCards(dynamic endpoint) => (super.noSuchMethod(
       Invocation.method(#getFilteredCards, [endpoint]),
-      returnValue: _i7.Future<void>.value(),
-      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+      returnValue: _i3.Future<void>.value(),
+      returnValueForMissingStub: _i3.Future<void>.value()) as _i3.Future<void>);
   @override
-  _i7.Future<void> getAllCards() => (super.noSuchMethod(
+  _i3.Future<void> getAllCards() => (super.noSuchMethod(
       Invocation.method(#getAllCards, []),
-      returnValue: _i7.Future<void>.value(),
-      returnValueForMissingStub: _i7.Future<void>.value()) as _i7.Future<void>);
+      returnValue: _i3.Future<void>.value(),
+      returnValueForMissingStub: _i3.Future<void>.value()) as _i3.Future<void>);
   @override
   void dispose() => super.noSuchMethod(Invocation.method(#dispose, []),
       returnValueForMissingStub: null);
